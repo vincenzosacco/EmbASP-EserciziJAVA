@@ -1,0 +1,127 @@
+% Esercizio 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% zebra puzzle
+%
+% There are 5 houses each of a different colour: (RED, GREEN, 
+% IVORY, BLUE, YELLOW) and inhabited by a person of a particular 
+% nationality (Japanese, Englishman, Norwegian, Russian, Spaniard) 
+% with a particular pet (horse, snail, zebra, fox, dog), drink 
+% (water, coffee, tea, milk, orange juice) and brand of cigarettes 
+% (LuckyStrike, Winston, Chesterfields, Kools, Parliaments).
+% 
+% It is given that:
+% 
+% 1.	The Englishman lives in the RED house.
+% 2.	The Spaniard owns the dog.
+% 3.	The Norwegian lives in the first house on the left.
+% 4.	Kools are smoked in the YELLOW house.
+% 5.	The man who smokes Chesterfields lives in the house 
+%       next to the man with the fox.
+% 6.	The Norwegian lives next to the BLUE house.
+% 7.	The Winston smoker owns snails.
+% 8.	The LuckyStrike smoker drinks orange juice.
+% 9.	The Russian drinks tea.
+% 10.	The Japanese smokes Parliaments.
+% 11.	Kools are smoked in the house next to the house where 
+%       the horse is kept.
+% 12.	Coffee is drunk in the GREEN house.
+% 13.	The GREEN house is immediately to the right of the 
+%       IVORY house.
+% 14.	Milk is drunk in the middle house.
+% 
+% A zebra is found wandering in the streets and the animal 
+% shelter wants to find out who let the zebra out, that is, 
+% which house the zebra belongs to.
+% 
+% 
+% This famous problem has a unique solution, that follows:
+% 
+% Number 	cigarettes	country	colour	pet	drink
+% ==============================================================
+% 1	kools		Norway	yellow	fox	water
+% 2	chesterfields	Russia	blue	horse	tea
+% 3	winston		England	red	snails	milk
+% 4	luckyStrike	Spain	ivory	dog	orange juice
+% 5	parliaments  	Japan	green	zebra	coffee
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%Esercizio 2
+%Si prenda in considerazione il gioco giapponese chiamato “FUTOSHIKI”. 
+%In questo gioco matematico si deve riempire una griglia quadrata contenente NxN celle, 
+%di modo che ogni riga o colonna contenga tutti e soli i numeri da 1 a N. 
+%Sono inoltre presenti vincoli tra alcune celle adiacenti,
+% espressi con un segno di maggiore (o minore, a seconda del punto di vista), 
+%che devono ovviamente essere rispettati: 
+%se tra due celle adiacenti è presente la diseguaglianza, i numeri collocati 
+%dovranno rispettarne il verso. 
+%Nella griglia di input possono essere già presenti alcuni numeri che aiutano la risoluzione. 
+%Si scriva un programma logico ASP che consenta ad un sistema (come ad esempio DLV) 
+%di risolvere il rompicapo
+
+%di seguito sono riportati i fatti e le regole che descrivono due input diversi. Testare il programma su entrambi gli input
+
+%input1
+riga(1..4).
+colonna(1..4).
+
+cella(X,Y) :-riga(X), colonna(Y).
+riempi(1,2,3). %la cella 1,2 contiene già un 3.
+riempi(1,3,2). %la cella 1,3 contiene già un 2.
+riempi(2,1,2). %la cella 2,1 contiene già un 2.
+riempi(2,2,4). %la cella 2,2 contiene già un 4.
+
+maggiore(2,3,2,4). %la cella 2,3 deve contenere un valore maggiore di quello in 2,4.
+maggiore(4,2,3,2). %la cella 4,2 deve contenere un valore maggiore di quello in 3,2.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%input 2
+riga(1..5).
+colonna(1..5).
+
+cella(X,Y) :-riga(X), colonna(Y).
+
+maggiore(1,4,1,5).
+maggiore(1,3,2,3).
+maggiore(2,4,2,3).
+maggiore(3,2,2,2).
+maggiore(2,3,3,3).
+maggiore(3,4,2,4).
+maggiore(4,1,4,2).
+maggiore(4,5,4,4).
+maggiore(5,2,5,3).
+maggiore(5,3,4,3).
+maggiore(4,4,5,4).
+
+
+% ==============================================================================
+% Esercizio 3. 
+% Quattro amici, nonostante generalmente vadano molto d’accordo, hanno gusti 
+% completamente diversi riguardo i programmi televisivi preferiti. Infatti, 
+% ognuno di loro ha come suo programma preferito un programma diverso da 
+% quello degli altri tre amici. Inoltre tali programmi vengono tutti 
+% trasmessi in giorni ed orari tra loro differenti.  Scrivere un programma 
+% DLV che, utilizzando gli indizi seguenti, individui per ogni amico: il titolo 
+% del suo programma preferito, il giorno della settimana e l’orario in cui 
+% viene trasmesso.
+
+% Indizi:
+
+% 1.	La serie “CSI” non viene trasmessa di domenica.
+% 2.	Il programma “Ulisse”, trasmesso alle 7 di sera, non è quello preferito da Michele.
+% 3.	“Stranamore” non è il programma preferito di Alberto.
+% 4.	Il programma preferito di Roberto viene trasmesso alle 10 di sera ma non di mercoledì.
+% 5.	Il programma trasmesso martedì sera è “XFactor”.
+% 6.	Michele non guarda mai la televisione alle 9 di sera, mentre Giorgio non la guarda mai di domenica.
+% 7.	“Stranamore” viene trasmesso un’ora dopo rispetto all’orario di inizio del programma preferito di Giorgio, 
+%       ma un’ora prima rispetto al programma trasmesso di lunedì.
+
+% Amici:     		Alberto, Giorgio, Michele, Roberto
+% Programmi : 	CSI, Stranamore, Ulisse, XFactor
+% Giorni:     		domenica, lunedì, martedì, mercoledì
+% Orari inizio:    	7, 8, 9, 10 (PM).
+

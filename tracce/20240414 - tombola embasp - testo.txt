@@ -1,0 +1,22 @@
+Si progetti e si implementi una applicazione Java (o Python, o C#) 
+per generare cartelle per la tombola napoletana. 
+In particolare, l'applicazione dovrà chiedere all'utente quante cartelle desidera, 
+generarle e visualizzarle su standard output. 
+Se il numero di cartelle generabili fosse minore del numero specificato dall'utente,
+visualizzare su standard output tutte le cartelle generabili.
+Per la generazione delle cartelle si utilizzi un programma ASP
+ e si tenga conto quanto descritto di seguito; ogni cartella:  
+ - deve contenere esattamente 15 numeri compresi tra 1 e 90;
+ - i numeri devono essere distribuiti su 3 file e 9 colonne;
+ - ciascuna colonna deve contenere almeno 1 numero, e non piu' di 2;
+ - ciascuna riga deve contenere esattamente 5 numeri;
+ - la prima colonna puo' contenere solo numeri  tra 1 e 9; 
+    la seconda colonna numeri tra 10 e 19; la terza tra 20 e 29, 
+    e cosi' via fino all'ottava, che contiene i numeri tra 70 e 79; 
+    la nona colonna puo' contenere numeri tra 80 e 90;
+ - in aggiunta, rispetto alle regole classiche, 
+    è preferibile evitare cartelle che contengano numeri consecutivi nella stessa colonna.
+
+Si faccia uso del framework EmbASP per invocare il sistema DLV2 sul programma logico così ottenuto.
+Le opzioni -n N e --printonlyoptimum di DLV2 possono essere utilizzate per ottenere 
+da DLV2 N answer set ottimi (qualora esistano almeno N answer set ottimi).
