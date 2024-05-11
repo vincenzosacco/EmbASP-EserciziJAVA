@@ -11,11 +11,9 @@ import it.unical.mat.embasp.languages.asp.ASPMapper;
 import it.unical.mat.embasp.platforms.desktop.DesktopHandler;
 import it.unical.mat.embasp.platforms.desktop.DesktopService;
 import it.unical.mat.embasp.specializations.dlv2.desktop.DLV2DesktopService;
-import org.antlr.v4.runtime.misc.NotNull;
 
-import java.util.Objects;
 import java.util.Set;
-import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Creata da me velocemente per gestire EmbASP
@@ -27,10 +25,12 @@ public class HandlerAI {
     private InputProgram facts;
     private InputProgram enconding;
 
+    
     private Output output;
     private OptionDescriptor option;
     private Integer OPTION_ID_n0 = null ;
 
+//-----------------CONSTRUCTOR----------------------------------------
 
     public HandlerAI(){
         initEmbAsp();
@@ -45,6 +45,8 @@ public class HandlerAI {
         enconding = new ASPInputProgram();
     }
 
+//-----------------METHODS----------------------------------------
+
     public void showAllAnswerSet(boolean flag){
         if (flag)
             OPTION_ID_n0 = (Integer) handler.addOption(option);
@@ -57,17 +59,56 @@ public class HandlerAI {
         String optString= " -n"+n;
         OptionDescriptor opt = new OptionDescriptor(optString);
         handler.addOption(opt);
-
-
-
     }
+        
+    public void mapToEmb(Class<?> c  ) throws ObjectNotValidException, IllegalAnnotationException {
+        ASPMapper.getInstance().registerClass(c);
+    }
+//-----------------ADDs-------------------------------------------
+
     public void addOption(String option){
         OptionDescriptor opt = new OptionDescriptor(option);
         handler.addOption(opt);
     }
 
-    public void mapToEmb(Class<?> c  ) throws ObjectNotValidException, IllegalAnnotationException {
-        ASPMapper.getInstance().registerClass(c);
+    /**
+     * Check if a string is a valid fact using regular expression.
+     */
+    private boolean checkFactString(String s){
+        // fact
+        String symConst = "[a-zA-Z]+";
+        Pattern predicate = Pattern.compile(symConst);
+        // fact(1)
+        String intOrSymConst = "(\\d|[a-zA-Z]+)";
+        Pattern atom1 = Pattern.compile(predicate.pattern() + "\\("+ intOrSymConst + "\\)" );
+        // fact(1,...)  
+        String intOrSymConst_comma = "((\\d|[a-zA-Z]+),)+";
+        Pattern atomN = Pattern.compile(predicate.pattern() + 
+                        "\\(" + intOrSymConst_comma + intOrSymConst + "\\)" );
+        
+
+        if( s.matches(atomN.pattern()) || s.matches(atom1.pattern()) || s.matches(predicate.pattern()) )
+            return true;
+        
+        return false;
+    }
+
+    /**
+     * Add a fact accepting as parameter a string. <p>
+     * The string must be in the form of a fact without '.' , for example: 
+     * "fact" or "fact(1)" or "fact(1,a)". <p>
+     * Actually string constants are not accepted, only integer and SymbolicConstant;  
+     * so fact("s") isn't valid.<p>
+     * 
+     * @param s - fact to add
+     * @throws Exception if string is not valid
+     */
+    public void addFactAsString(String s) throws Exception {
+        if (! checkFactString(s))
+            throw new Exception("String is not valid");
+   
+        facts.addProgram(s+".");
+        
     }
 
     public void addFactAsObject(Object o) throws Exception {
@@ -78,7 +119,7 @@ public class HandlerAI {
         
     }
 
-    public void addFactsAsObjectArray(Set<Object> objects) throws Exception {
+    public void addFactsAsObjectSet(Set<Object> objects) throws Exception {
         if (objects == null)
             throw new Exception("Object is null");
 
@@ -93,6 +134,7 @@ public class HandlerAI {
         enconding.addFilesPath(encodingPath);
     }
 
+//-----------------SOLVE----------------------------------------
     public void startSync() {
         if (enconding.getFilesPaths().isEmpty())
             throw new RuntimeException("Encoding not found, please add encoding file with addEncoding method");

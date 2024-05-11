@@ -19,10 +19,10 @@ public class Es2 {
 
 //--INIT EMBASP
         handlerAI.clearAll();
-        handlerAI.mapToEmb( arc.class );
+        handlerAI.mapToEmb( edge.class );
         handlerAI.mapToEmb( clique.class );
         handlerAI.addEncoding("encodings/20240411-esercizi_Guess&Check&Optimize/es2.asp");
-        handlerAI.addFactsAsObjectArray(facts);
+        handlerAI.addFactsAsObjectSet(facts);
 
 //--START SOLVE
         //handlerAI.showAllAnswerSet(true);
@@ -48,17 +48,17 @@ public class Es2 {
         HashSet<Object> facts = new HashSet<>();
         int tmp;
         while (true) {
-            arc tmpArc = new arc();
+            edge tmpArc = new edge();
 
             System.out.print("\nInserire nodo sorgente: ");
             tmp = in.nextInt();
             if (tmp == -1) break;
-            tmpArc.setNode1(tmp);
+            tmpArc.setOrig(tmp);
 
             System.out.print("Inserire nodo destinazione: ");
             tmp = in.nextInt();
             if (tmp == -1) break;
-            tmpArc.setNode2(tmp);
+            tmpArc.setDest(tmp);
 
         //--CHECK IF THE ARC ALREADY EXISTS
             if (! facts.add(tmpArc)) {

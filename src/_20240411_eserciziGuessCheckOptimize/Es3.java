@@ -3,7 +3,6 @@ package _20240411_eserciziGuessCheckOptimize;
 import EmbAsp.HandlerAI;
 import it.unical.mat.embasp.languages.asp.AnswerSets;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
