@@ -1,11 +1,11 @@
 package _20240411_eserciziGuessCheckOptimize;
-import java.io.InputStream;
-import java.lang.reflect.Array;
+
+import EmbAsp.HandlerAI;
+import it.unical.mat.embasp.languages.asp.AnswerSets;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import EmbAsp.HandlerAI;
-import it.unical.mat.embasp.languages.asp.AnswerSet;
-import it.unical.mat.embasp.languages.asp.AnswerSets;
 
 
 // Esercizio 3. Si consideri il seguente rompicapo. Obiettivo del gioco è completare una griglia di dimensione 4x4 
@@ -23,9 +23,9 @@ import it.unical.mat.embasp.languages.asp.AnswerSets;
 // 8) Il numero 3 compare esattamente una volta in tutta la griglia.
 
 public class Es3 {
-    private static int[] sommaRighe = new int[4];
-    private static int[] sommaColonne = new int[4];
-    private static int sommaDiagonale ;
+    private static int[] check_sommaRighe = new int[4];
+    private static int[] check_sommaColonne = new int[4];
+    private static int check_sommaDiagonale ;
     private static int[][] griglia = new int[4][4];
 
 
@@ -36,9 +36,9 @@ public class Es3 {
         
         //input(sommaRighe, sommaColonne, sommaDiagonale);
 
-        sommaRighe = new int[]{12, 14, 30, 17};
-        sommaColonne = new int[]{17, 15, 23, 18};
-        sommaDiagonale = 15;
+        check_sommaRighe = new int[]{12, 14, 30, 17};
+        check_sommaColonne = new int[]{17, 15, 23, 18};
+        check_sommaDiagonale = 15;
 
 
 //--INIT EMBasp
@@ -50,10 +50,10 @@ public class Es3 {
 
 //--ADD FACTS
         for (int i = 0; i < 4; i++) {
-            handlerAI.addFactAsObject(new sommaRiga(sommaRighe[i], i));
-            handlerAI.addFactAsObject(new sommaColonna(sommaColonne[i], i));
+            handlerAI.addFactAsObject(new sommaRiga(check_sommaRighe[i], i));
+            handlerAI.addFactAsObject(new sommaColonna(check_sommaColonne[i], i));
         }
-        handlerAI.addFactAsObject(new sommaDiagonale(sommaDiagonale));
+        handlerAI.addFactAsObject(new sommaDiagonale(check_sommaDiagonale));
   
 //--SOLVE
         handlerAI.startSync();
@@ -94,105 +94,138 @@ public class Es3 {
     // 3) La somma dei valori in una riga deve essere uguale al valore assegnato per quella riga; 
         for (int i = 0; i < 4; i++) {
             System.out.println("Inserisci la somma della riga " + i);
-            sommaRighe[i] = in.nextInt();
+            check_sommaRighe[i] = in.nextInt();
         }
 
     // 4) La somma dei valori in una colonna deve essere uguale al valore assegnato per quella colonna; 
         for (int i = 0; i < 4; i++) {
             System.out.println("Inserisci la somma della colonna " + i);
-            sommaColonne[i] = in.nextInt();
+            check_sommaColonne[i] = in.nextInt();
         }
 
     // 5) La somma dei valori sulla diagonale principale deve essere uguale ad un valore assegnato; 
         System.out.println("Inserisci la somma della diagonale principale");
-        sommaDiagonale = in.nextInt();
+        check_sommaDiagonale = in.nextInt();
         
         in.close();
         
     }
 
     private static boolean checkGriglia(){
-
+        
+    //  1) Ogni riga deve contenere numeri tutti diversi tra loro;
+    //  2) Ogni colonna deve contenere numeri tutti diversi tra loro;
         int [] numeri;
         int tmp;
-        int count3=0;
+    
+    //  3) La somma dei valori in una riga deve essere uguale al valore assegnato per quella riga;
+
+    //  4) La somma dei valori in una colonna deve essere uguale al valore assegnato per quella colonna;
+        int sommaColonna = 0;
         
-    //--CHECK ROWS-------------------------------------------------------------
+    //  5) La somma dei valori sulla diagonale principale deve essere uguale ad un valore assegnato;   
+        int sommaDiagonale = 0;
+
+    //  6) Nella prima riga è presente un 5;
+        boolean trovato5 = false;
+
+    //  7) La terza riga e la terza colonna contengono valori disposti in ordine crescente;
+
+    //  8) Il numero 3 compare esattamente una volta in tutta la griglia
+        int count3=0;
+
+        
+//--VISIT PER ROWS------------------------------------------------------------------------------------------------
         for (int i = 0; i < 4; i++) 
-        {
+        {   
+            //1)
             numeri = new int[9];
+            //5)
+            sommaDiagonale += griglia[i][i];
             
             for (int j = 0; j < 4; j++) 
             {
                 tmp = griglia[i][j];
 
-                // 8) Il numero 3 compare esattamente una volta in tutta la griglia
+                //1) 
+                numeri[tmp - 1 ]++;
+
+                //8) 
                 if(tmp==3){
                     count3++;
                     if(count3>1)
                         return false;
                 }
 
-                // La griglia non può contenere numeri minori di 1 o maggiori di 9
-                if (tmp < 1 || tmp > 9) {
-                    return false;
-                }
-                
-                // 1) Ogni riga deve contenere numeri tutti diversi tra loro;
-                numeri[tmp - 1 ]++;
-                
+    // La griglia non può contenere numeri ripetuti    
                 if (numeri[tmp - 1] > 1) {
                     return false;
                 }  
-            }
+
+    // La griglia non può contenere numeri minori di 1 o maggiori di 9
+                if (tmp < 1 || tmp > 9) {
+                    return false;
+                }
+
+            }//for(j)
             
-            // 3) La somma dei valori in una riga deve essere uguale al valore assegnato per quella riga;
-            if (Arrays.stream(griglia[i]).sum() != sommaRighe[i]) {
+            //3)  
+            if (Arrays.stream(griglia[i]).sum() != check_sommaRighe[i]) {
                 return false;
             }
+
             
+        }//for(i)
+        
+        //5)
+        if (sommaDiagonale != check_sommaDiagonale) {
+            return false;
         }
         
-        
-        //--CHECK COLUMNS-------------------------------------------------------------
+//--VISIT PER COLUMNS-------------------------------------------------------------
         for (int j = 0; j < 4; j++) 
-        {
+        {   
+            //2)
             numeri = new int[9];
-            int sommaColonna = 0;
+            //4)
+            sommaColonna = 0;
             
             for (int i = 0; i < 4; i++) 
             {
                 tmp = griglia[i][j];
-                sommaColonna += tmp;
                 
-                //  2) Ogni colonna deve contenere numeri tutti diversi tra loro;
+                //2) 
                 numeri[tmp - 1 ]++;
-                if (numeri[tmp - 1] > 1) {
+                if (numeri[tmp - 1] > 1) 
                     return false;
-                }
                 
+                //4)
+                sommaColonna += tmp;
             }
             
-            // 4) La somma dei valori in una colonna deve essere uguale al valore assegnato per quella colonna;
-            if (sommaColonna != sommaColonne[j]) {
+            //4) 
+            if (sommaColonna != check_sommaColonne[j]) {
                 return false;
             }
         }
 
         
-        
-
-        
-        // 5) La somma dei valori sulla diagonale principale deve essere uguale ad un valore assegnato;
-        
-        
-    
-        if (Arrays.asList(griglia[0]).contains(5)) 
+        //6)
+        for (int n : griglia[0]) {
+            if (n == 5) 
+                trovato5 = true;
+        }
+        if (!trovato5)
             return false;
         
-        // 7) La terza riga e la terza colonna contengono valori disposti in ordine crescente;
-        
-        
+        //7) 
+        if  (
+            griglia[2][0] > griglia[2][1] || griglia[2][1] > griglia[2][2] || griglia[2][2] > griglia[2][3] || //riga 3 crescente
+            griglia[0][2] > griglia[1][2] || griglia[1][2] > griglia[2][2] || griglia[2][2] > griglia[3][2]    //colonna 3 crescente
+            )
+            return false;
+
+
         return true;
     }
 
@@ -200,20 +233,27 @@ public class Es3 {
 
     private static void printGriglia(String message) {
         System.out.println("\n"+message);
+
         for (int i = 0; i < 4; i++) {
+
+            // | 1 | 2 | 3 | 4 | 5 |
             for (int j = 0; j < 4; j++) {
                 System.out.print(griglia[i][j] + "  ");
             }
-            System.out.print("="+sommaRighe[i]+"\n");
+
+            System.out.print("|"+check_sommaRighe[i]+"\n");
         }
 
-        for (int i=0; i<sommaColonne.length; i++) {
-            System.out.print("=  ");
+        for (int i=0; i<check_sommaColonne.length*3; i++) {
+            System.out.print("-");
         }
+
         System.out.println();
-        for (int s : sommaColonne) {
+        for (int s : check_sommaColonne) {
                 System.out.print(s + " ");
         }
+
+        System.out.println("|"+check_sommaDiagonale);
   
     }
 

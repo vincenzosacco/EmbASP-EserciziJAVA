@@ -9,9 +9,7 @@ import EmbAsp.HandlerAI;
 import it.unical.mat.embasp.languages.asp.AnswerSet;
 import it.unical.mat.embasp.languages.asp.AnswerSets;
 
-import java.util.EnumSet;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Es1 {
